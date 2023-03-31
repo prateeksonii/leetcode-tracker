@@ -6,21 +6,18 @@ import type { NextRequest } from "next/server";
 const publicPaths = ["/"];
 
 const isPublic = (path: string) => {
-  return publicPaths.find((x) =>
-    path.match(new RegExp(`^${x}$`.replace("*$", "($|/)")))
-  );
+  return publicPaths.includes(path);
 };
 
-export default withClerkMiddleware((request: NextRequest) => {
+export default withClerkMiddleware(async (request: NextRequest) => {
   // if the user is not signed in redirect them to the sign in page.
-  const { userId } = getAuth(request);
-
   if (isPublic(request.nextUrl.pathname)) {
-    if (userId) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
     return NextResponse.next();
   }
+
+  console.log("auth", getAuth(request));
+
+  const { userId } = getAuth(request);
 
   if (!userId) {
     // redirect the users to /pages/sign-in/[[...index]].ts
@@ -31,6 +28,18 @@ export default withClerkMiddleware((request: NextRequest) => {
   return NextResponse.next();
 });
 
+// Stop Middleware running on static files and public folder
 export const config = {
-  matcher: ["/((?!_next/image|_next/static|favicon.ico).*)", "/"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next
+     * - static (static files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     * - public folder
+     */
+    "/((?!static|.*\\..*|_next|favicon.ico).*)",
+    "/",
+  ],
 };
