@@ -26,8 +26,6 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("layout");
-
   await upsertUser();
   return <>{children}</>;
 }

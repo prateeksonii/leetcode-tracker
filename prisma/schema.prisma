@@ -23,5 +23,5 @@ model UserProblem {
   User       User     @relation(fields: [userId], references: [id])
   userId     String
   lastSolved DateTime @default(now())
-  count      Int
+  count      Int      @default(1)
 }
