@@ -15,16 +15,16 @@ export default withClerkMiddleware(async (request: NextRequest) => {
     return NextResponse.next();
   }
 
-  console.log("auth", getAuth(request));
+  // console.log("auth", getAuth(request));
 
-  const { userId } = getAuth(request);
+  // const { userId } = getAuth(request);
 
-  if (!userId) {
-    // redirect the users to /pages/sign-in/[[...index]].ts
-    const signInUrl = new URL("/", request.url);
-    signInUrl.searchParams.set("redirect_url", request.url);
-    return NextResponse.redirect(signInUrl);
-  }
+  // if (!userId) {
+  //   // redirect the users to /pages/sign-in/[[...index]].ts
+  //   const signInUrl = new URL("/", request.url);
+  //   signInUrl.searchParams.set("redirect_url", request.url);
+  //   return NextResponse.redirect(signInUrl);
+  // }
   return NextResponse.next();
 });
 

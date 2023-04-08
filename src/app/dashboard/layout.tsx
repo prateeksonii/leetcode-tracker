@@ -14,9 +14,15 @@ const upsertUser = async () => {
     create: {
       username: user.username!,
       clerkUserId: user.id,
+      email:
+        user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)
+          ?.emailAddress ?? "",
     },
     update: {
       username: user.username!,
+      email:
+        user.emailAddresses.find((e) => e.id === user.primaryEmailAddressId)
+          ?.emailAddress ?? "",
     },
   });
 };
